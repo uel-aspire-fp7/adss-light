@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="UEL Category"
+            id="org.uel.aspire.spa">
+      </category>
+      <view
+            name="Tool View"
+            icon="icons/sample.gif"
+            category="org.uel.aspire.spa"
+            class="org.uel.aspire.spa.views.ToolView"
+            id="org.uel.aspire.spa.views.ToolView">
+      </view>
+      <view
+            class="org.eclipse.ui.navigator.CommonNavigator"
+            icon="icons/sample.gif"
+            id="spaproject.navigator"
+            name="SPA Project Navigator">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               ratio="0.5"
+               relative="org.eclipse.ui.views.ProblemView"
+               relationship="right"
+               id="org.uel.aspire.spa.views.ToolView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
+   <extension
+         id="spa.category.wizards"
+         name="SPA Project Wizards"
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="spa.category.wizards"
+            class="org.uel.aspire.spa.NewWizard"
+            icon="icons/sample.gif"
+            id="org.uel.aspire.spa.wizard"
+            name="SPA Project"
+            project="true">
+      </wizard>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.viewer">
+      <viewerActionBinding
+            viewerId="spaproject.navigator">
+         <includes>
+            <actionExtension
+                  pattern="org.eclipse.ui.navigator.resources.*">
+            </actionExtension>
+         </includes>
+      </viewerActionBinding>
+      <viewerContentBinding
+            viewerId="spaproject.navigator">
+         <includes>
+            <contentExtension
+                  pattern="org.eclipse.ui.navigator.resourceContent">
+            </contentExtension>
+            <contentExtension
+                  pattern="org.eclipse.ui.navigator.resources.filters.*">
+            </contentExtension>
+            <contentExtension
+                  pattern="org.eclipse.ui.navigator.resources.linkHelper">
+            </contentExtension>
+            <contentExtension
+                  pattern="org.eclipse.ui.navigator.resources.workingSets">
+            </contentExtension>
+         </includes>
+      </viewerContentBinding>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.uel.aspire.spa.perspectives.Perspective"
+            id="org.uel.aspire.spa.perspective"
+            name="SPA Perspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.uel.aspire.spa.perspective">
+         <view
+               id="spaproject.navigator"
+               minimized="false"
+               ratio="0.25"
+               relationship="left"
+               relative="org.eclipse.ui.editorss">
+         </view>
+      </perspectiveExtension>
+   </extension>
+
+</plugin>

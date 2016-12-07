@@ -1,0 +1,6 @@
+Protection2
+1
+Obfuscation3 3 
+parameter1 0.9 
+parameter2 0.4
+parameter3 1.0

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="eu.aspire_fp7.adss.light.akb.ui.editors.AKBEditor"
+            contributorClass="eu.aspire_fp7.adss.light.akb.ui.editors.AKBEditorContributor"
+            filenames="akb-light.owl"
+            icon="icons/akb.png"
+            id="eu.aspire_fp7.adss.light.akb.ui.editors.AKBEditor"
+            name="ADSS Light AKB Editor">
+      </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            category="eu.aspire_fp7.adss.ui.category"
+            class="eu.aspire_fp7.adss.light.akb.ui.wizards.NewWizard"
+            icon="icons/newProject.png"
+            id="eu.aspire_fp7.adss.light.ui.newWizard"
+            name="ADSS Light Software Protection Project"
+            project="true">
+      </wizard>
+   </extension>
+   <extension
+         id="eu.aspire_fp7.adss.light.akb.ui.nature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="eu.aspire_fp7.adss.light.akb.ui.wizards.Nature">
+         </run>
+      </runtime>
+   </extension>
+   <extension
+         point="org.eclipse.ui.ide.projectNatureImages">
+      <image
+            icon="icons/nature.png"
+            id="eu.aspire_fp7.adss.light.akb.ui.imageNature"
+            natureId="eu.aspire_fp7.adss.light.akb.ui.nature">
+      </image>
+   </extension>
+
+</plugin>

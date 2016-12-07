@@ -1,0 +1,6 @@
+5
+attacker1 100.0
+attacker2 20.0
+attacker3 71.0
+attacker4 33.5
+attacker5 2.0
