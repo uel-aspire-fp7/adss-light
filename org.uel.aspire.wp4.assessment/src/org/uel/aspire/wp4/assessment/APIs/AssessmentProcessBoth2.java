@@ -44,6 +44,8 @@ import org.uel.aspire.wp4.comparetoolchains.CompareToolChains;
 import org.uel.aspire.wp4.comparetoolchains.MappingFileIn;
 import org.uel.aspire.wp4.comparetoolchains.MeasureFileIn;
 import org.uel.aspire.wp4.comparetoolchains.TransitionInformationFileIn;
+import org.uel.aspire.wp4.data.AnnotationTransitionMap;
+import org.uel.aspire.wp4.data.MetricsData;
 import org.uel.aspire.wp4.logger.SPALogger;
 
 import eu.aspire_fp7.adss.ADSS;
@@ -65,6 +67,9 @@ import it.polito.security.ontologies.exceptions.ReasoningInterruptedException;
 public class AssessmentProcessBoth2 implements SPA2 {
 	
 	//PetriNet petrinet;
+	AnnotationTransitionMap atmap;
+	MetricsData metricsafter;
+	MetricsData metricsbefore;
 	
 	ArrayList<AttackPath> aps;	
 	boolean apsFlag;
@@ -362,7 +367,7 @@ public class AssessmentProcessBoth2 implements SPA2 {
 		
 		////this part is to collect metrics data. currently, I use formulas, but the future may be different, by Gaofeng, 01/01/2016.
 		//this is the place I need Elena to involve:)
-		//TODO 
+		
 				//ACTCConnector ac;
 				HashMap<String, HashMap<String, Double> > mapping = new HashMap<String, HashMap<String, Double> >();
 				/*
@@ -473,15 +478,14 @@ public class AssessmentProcessBoth2 implements SPA2 {
 	public double runProtectionFitness() {		
 		double result = 0.0;		
 		AssessFitness2 af = new AssessFitness2();
-		
+		//TODO
 		//ArrayList<AttackPath> apsinner = convertAPS(aps);//attackModel.getAttackPaths() ;
 		
 	   // ProtectionSolution ps = new ProtectionSolution(pi);//protectionSolution;
 		
 		if(measureList == null)
 		{
-			measureList = new ArrayList<String>();			
-			
+			measureList = new ArrayList<String>();				
 			try {
 				for ( int i = 0 ; i < adss.getModel().getVanillaSolution().getApplicationMetrics().size(); i++)
 				{
@@ -492,15 +496,14 @@ public class AssessmentProcessBoth2 implements SPA2 {
 				/*
 				MeasureFileIn meas = new MeasureFileIn("aspire-config/Measures.txt");
 				measureList = meas.getMeasures();*/
-			} catch (Exception e) {
-				
+			} catch (Exception e) {				
 				e.printStackTrace();
 			}
 		}
 		
 		////this part is to collect metrics data. currently, I use formulas, but the future may be different, by Gaofeng, 01/01/2016.
 		//this is the place I need Elena to involve:)
-		//TODO 
+		
 		//ACTCConnector ac;
 		HashMap<String, HashMap<String, Double> > mapping = new HashMap<String, HashMap<String, Double> >();
 		/*
@@ -603,9 +606,7 @@ public class AssessmentProcessBoth2 implements SPA2 {
 	// In 26/02/2016, it is suspended. 
 	private ArrayList<AttackPath> convertAPS(ArrayList<eu.aspire_fp7.adss.akb.AttackPath> apsold)
 	{
-		ArrayList<AttackPath> apsin = new ArrayList<AttackPath>();
-		//TODO
-		
+		ArrayList<AttackPath> apsin = new ArrayList<AttackPath>();		
 		return apsin;
 	}
 	
@@ -614,7 +615,7 @@ public class AssessmentProcessBoth2 implements SPA2 {
 	private String checkFormulas()
 	{
 		String result = "";
-		//TODO
+		
 		return result;
 	}
 	
@@ -623,7 +624,7 @@ public class AssessmentProcessBoth2 implements SPA2 {
 	private ProtectionSolution convertPS(ProtectionInstantiation pi)
 	{
 		ProtectionSolution ps = new ProtectionSolution();
-		//TODO
+		
 		return ps;
 		
 	}
@@ -645,6 +646,30 @@ public class AssessmentProcessBoth2 implements SPA2 {
 		//log.print("Metrics files loaded!");
 		//log.changeLine();
 		return true;
+	}
+	
+	
+	public boolean initMetrics(MetricsData inafter, MetricsData inbefore) {
+		//ms.clear();
+		metricsafter = inafter;
+		metricsbefore = inbefore;
+		System.out.println("Metrics files loaded!");
+		System.out.println();
+		//log.print("Metrics files loaded!");
+		//log.changeLine();
+		return true;
+	}
+	
+	public boolean initAnnotations(AnnotationTransitionMap annotationtransitionmap) {
+		try
+		{
+			atmap = annotationtransitionmap;
+			return true;
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
 	}
 	
 	@Override
@@ -683,7 +708,7 @@ public class AssessmentProcessBoth2 implements SPA2 {
 
 	@Override
 	public boolean initMetrics(EList<Metric> metrics) {
-		// TODO Auto-generated method stub
+		
 		int size = metrics.size();
 		for(int i=0;i<size;i++)
 		{

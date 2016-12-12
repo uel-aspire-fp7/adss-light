@@ -1,13 +1,14 @@
-package org.uel.aspire.spa.views;
+package org.uel.aspire.wp4.data;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.uel.aspire.wp4.assessment.APIs.Metrics;
+
 
 
 public class LoadMetricsFiles {
@@ -18,7 +19,54 @@ public class LoadMetricsFiles {
 	public LoadMetricsFiles(String filesin, String pcnamein)
 	{
 		filesPath = filesin;
-		pcName = pcnamein;		
+		pcName = pcnamein;	
+	}
+	
+	public LoadMetricsFiles(String filesin)
+	{
+		filesPath = filesin;
+		//pcName = pcnamein;		
+	}
+	
+	public ArrayList<MetricsData> getMetricsDatas() throws IOException
+	{			
+		ArrayList<MetricsData> mds = new ArrayList<MetricsData>();		
+		
+		File[] files = new File(filesPath).listFiles();
+	
+		//System.out.println(filesPath);
+		
+		for (File file : files) 
+		{
+			if(file.isDirectory())
+			{
+				String name = file.getName();
+				MetricsData md = new MetricsData(name);
+				File[] files1 = new File( filesPath + File.separator + name ).listFiles();
+				
+				//System.out.println(filesPath+File.separator+name);
+				
+				for(File file1 : files1)
+				{		   
+					if (file1.isFile()) 
+					{
+						if(file1.getName().indexOf(".so.stat_complexity_info") != -1) 
+						{
+							md.setGMetrics(parseGMetrics(filesPath+File.separator+file.getName() + File.separator+file1.getName()));
+						}
+						
+						if(file1.getName().indexOf(".so.stat_regions_complexity_info") != -1) 
+						{
+							md.setRMetrics(parseCMetrics(filesPath+File.separator+file.getName() + File.separator+file1.getName()));
+						}
+						//System.out.println(filesPath+File.separator+file.getName() + File.separator+file1.getName());
+					}					
+				}
+				//System.out.println(md);
+				mds.add(md);
+			}
+		}		
+		return mds;		
 	}
 	
 	public MetricsData getMetricsData() throws IOException
@@ -29,8 +77,8 @@ public class LoadMetricsFiles {
 	
 		for (File file : files) {
 		    if (file.isFile()) {
-		    	if(file.getName().indexOf(".so.stat_complexity_info") != -1) {md.setGMetrics(parseGMetrics(filesPath+file.getName()));}
-		    	if(file.getName().indexOf(".so.stat_regions_complexity_info") != -1) {md.setRMetrics(parseCMetrics(filesPath+file.getName()));}		        
+		    	if(file.getName().indexOf(".so.stat_complexity_info") != -1) {md.setGMetrics(parseGMetrics(filesPath+File.separator+file.getName()));}
+		    	if(file.getName().indexOf(".so.stat_regions_complexity_info") != -1) {md.setRMetrics(parseCMetrics(filesPath+File.separator+file.getName()));}		        
 		    }
 		}		
 		return md;		

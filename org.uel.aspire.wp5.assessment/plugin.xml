@@ -34,16 +34,6 @@
          point="org.eclipse.ui.menus">
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu?after=additions">
-         <menu
-               label="Sample Menu"
-               mnemonic="M"
-               id="org.uel.aspire.wp5.assessment.menus.sampleMenu">
-            <command
-                  commandId="org.uel.aspire.wp5.assessment.commands.sampleCommand"
-                  mnemonic="S"
-                  id="org.uel.aspire.wp5.assessment.menus.sampleCommand">
-            </command>
-         </menu>
       </menuContribution>
       <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
@@ -60,15 +50,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.views">
-      <view
-            allowMultiple="false"
-            category="org.uel.aspire.wp4.assessment.UELView"
-            class="org.uel.aspire.wp5.assessment.views.TransitionView"
-            icon="icons/sample.gif"
-            id="org.uel.aspire.wp5.assessment.views.TransitionView"
-            name="Transition View"
-            restorable="true">
-      </view>
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">

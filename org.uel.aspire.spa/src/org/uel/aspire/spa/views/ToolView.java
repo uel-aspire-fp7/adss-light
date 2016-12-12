@@ -25,6 +25,8 @@ import org.uel.aspire.spa.NewWizard;
 import org.uel.aspire.wp4.assessment.APIs.AssessmentProcessBoth2;
 import org.uel.aspire.wp4.data.AnnotationTransitionMap;
 import org.uel.aspire.wp4.data.Annotations;
+import org.uel.aspire.wp4.data.LoadMetricsFiles;
+
 
 import eu.aspire_fp7.adss.ADSS;
 import eu.aspire_fp7.adss.akb.AkbFactory;
@@ -73,11 +75,10 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 
-
+import org.uel.aspire.wp4.data.MetricsData;
 /**
 *this is the view to display and edit the transition with formula and related attack steps from aAKB.
 *by Gaofeng, 06-06-2016.
-
  */
 
 public class ToolView extends ViewPart implements ISelectionListener, ISelectionChangedListener, IPartListener2{
@@ -88,8 +89,8 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 	public static final String ID = "org.uel.aspire.spa.views.ToolView";	
 	
 	private IShowInSource resource;
-	private TransitionViewLabelProvider labelprovider;
-	private TransitionViewContentProvider contentprovider;
+	//private TransitionViewLabelProvider labelprovider;
+	//private TransitionViewContentProvider contentprovider;
 	
 	private TreeViewer psTreeViewer;
 	
@@ -100,20 +101,22 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 	private AnnotationTransitionMap annotationtransitionmap;
 	
 	private PetriNet petrinet;
+	private ArrayList<MetricsData> metricsdatas;
+	private MetricsData vanillametricsdata;
 	
 	private AssessmentProcessBoth2 assessment;
 		
-	private Text transitionName;
-	private Text transitionNote;
-	private Combo stepCombo;
+	//private Text transitionName;
+	//private Text transitionNote;
+	//private Combo stepCombo;
 	private Combo pcCombo;
-	private Text stepType;
-	private Text transitionFormula;
-	private Button saveButton;
+	//private Text stepType;
+	//private Text transitionFormula;
+	//private Button saveButton;
 	private Button assessButton;
 	//private Button assessNormalisedButton;
-	private Button showKeyPathButton;
-	private AttackStep step = null;
+	//private Button showKeyPathButton;
+	//private AttackStep step = null;
 	private Transition transition = null;
 	
 	private Table table;
@@ -121,10 +124,10 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 
 	//private Combo annotationCombo;
  
-	private Text owlDirectoryText;
+	//private Text owlDirectoryText;
 	private Text owlFileText;
 	private Text owlLoadStatus;
-	private Text saveStatus;
+	//private Text saveStatus;
 	private Text transitionSelectedText;
 	
 	private Text annotationFileText;
@@ -133,19 +136,21 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 	private Text allAnnotationText;
 	
 	private Text metricsPathText; 
-	private Text vanilaMetricsPathText;
+	private Text vanillaMetricsPathText;
 	
 	private Text assessResult;
 		
 	public ToolView()
 	{
 		super();
-		labelprovider = new TransitionViewLabelProvider();
-		contentprovider = new TransitionViewContentProvider();	
+		//labelprovider = new TransitionViewLabelProvider();
+		//contentprovider = new TransitionViewContentProvider();	
 				
 		//adss = ADSS.getInstance();
 		tableData = new ArrayList<AssessData>();
 		annotationtransitionmap = new AnnotationTransitionMap();
+		
+		metricsdatas = new ArrayList<MetricsData>();
 	}
 	
 	@Override
@@ -161,20 +166,20 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 		akbGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		akbGroup.setText("Files Loading ");
 		akbGroup.setLayout(new GridLayout(3, false));		
-		Label owllabel1 = new Label(akbGroup,  SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.CENTER |  SWT.FILL);
-		owllabel1.setText("OWL Directory : ");	
-		owlDirectoryText = new Text(akbGroup,SWT.BORDER | SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.LEFT |  SWT.FILL |SWT.READ_ONLY);
-		owlDirectoryText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+		//Label owllabel1 = new Label(akbGroup,  SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.CENTER |  SWT.FILL);
+		//owllabel1.setText("OWL Directory : ");	
+		//owlDirectoryText = new Text(akbGroup,SWT.BORDER | SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.LEFT |  SWT.FILL |SWT.READ_ONLY);
+		//owlDirectoryText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		//String temppath = NewWizard.getProjectPath();
 		//owlDirectoryText.setText(temppath);	
-		owlDirectoryText.setText("E:/eclipse mars for ADSS/workspace/Nagra Use Case/AKB/");		
-		Button owlDirectoryButton = new Button(akbGroup, SWT.HORIZONTAL| SWT.CENTER );
-		owlDirectoryButton.setText("Browse...");		
+		//owlDirectoryText.setText("E:/eclipse mars for ADSS/workspace/Nagra Use Case/AKB/");		
+		//Button owlDirectoryButton = new Button(akbGroup, SWT.HORIZONTAL| SWT.CENTER );
+		//owlDirectoryButton.setText("Browse...");		
 		Label owllabel2 = new Label(akbGroup,  SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.CENTER |  SWT.FILL);
 		owllabel2.setText("OWL File : ");			
 		owlFileText = new Text(akbGroup,SWT.BORDER | SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.LEFT |  SWT.FILL | SWT.READ_ONLY);
 		owlFileText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));		
-		owlFileText.setText("akb-light.owl");		
+		owlFileText.setText("E:/eclipse mars for ADSS/workspace/Nagra Use Case/AKB/akb-light.owl");		
 		Button owlFileButton = new Button(akbGroup, SWT.HORIZONTAL| SWT.CENTER );	
 		owlFileButton.setText("Browse...");
 		Button loadOWLButton = new Button(akbGroup, SWT.HORIZONTAL| SWT.CENTER );	
@@ -186,6 +191,12 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 		
 		Label annotationblank1 = new Label(akbGroup,  SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.CENTER |  SWT.FILL);
 		annotationblank1.setText("  ");	
+		Label ablank1 = new Label(akbGroup,  SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.CENTER |  SWT.FILL);
+		ablank1.setText("  ");	
+		Label ablank2 = new Label(akbGroup,  SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.CENTER |  SWT.FILL);
+		ablank2.setText("  ");	
+		Label ablank3 = new Label(akbGroup,  SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.CENTER |  SWT.FILL);
+		ablank3.setText("  ");	
 		
 		Label annotationlabel1 = new Label(akbGroup,  SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.CENTER |  SWT.FILL);
 		annotationlabel1.setText("Annotation File: ");	
@@ -232,14 +243,14 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 		/*Label label21 = new Label(akbGroup,  SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.CENTER |  SWT.FILL);
 		label21.setText("");	*/
 		
-		owlDirectoryText.addModifyListener(new ModifyListener()
+		/*owlDirectoryText.addModifyListener(new ModifyListener()
 		{
 			@Override
 			public void modifyText(ModifyEvent e)
 			{				
 				//adss.getModel().getPreferences().setSetPNDirectory(pnDirectoryText.getText());
 			}
-		});
+		});*/
 		owlFileText.addModifyListener(new ModifyListener()
 		{
 			@Override
@@ -248,7 +259,7 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 				//adss.getModel().getPreferences().setSetPNFile(pnFileText.getText());
 			}
 		});
-		owlDirectoryButton.addSelectionListener(new SelectionAdapter()
+		/*owlDirectoryButton.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
 			public void widgetSelected(SelectionEvent e)
@@ -268,7 +279,7 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 					}
 				});
 			}
-		});
+		});*/
 		owlFileButton.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
@@ -296,7 +307,7 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 			public void widgetSelected(SelectionEvent e)
 			{
 				
-				File file = new File(owlDirectoryText.getText() + owlFileText.getText());
+				File file = new File(owlFileText.getText());
 				IWorkspace workspace= ResourcesPlugin.getWorkspace();   
 				IPath location= Path.fromOSString(file.getAbsolutePath());
 				IFile ifile= workspace.getRoot().getFileForLocation(location);
@@ -512,12 +523,12 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 				
 		Group configurateGroup = new Group(parent, SWT.NONE);
 		configurateGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		configurateGroup.setText("Protection Configuration");
+		configurateGroup.setText("Assessment Configuration");
 		configurateGroup.setLayout(new GridLayout(1, false));
 		
 		Label label6 = new Label(configurateGroup,  SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.CENTER |  SWT.FILL);
 		label6.setText("All Protection Solutions in this Use Case:");
-		//managedForm.getToolkit().createLabel(assessGroup, "All Protection Solutions in this Use Case:");
+		
 		pcCombo = new Combo(configurateGroup, SWT.READ_ONLY);		
 		pcCombo.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));	
 		if(adss!= null)
@@ -528,15 +539,11 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 			}	
 		}
 		pcCombo.select(0);
-		/*Label label61 = new Label(akbGroup,  SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.CENTER |  SWT.FILL);
-		label61.setText("");*/
-		//////////////////////display solution graphically tree , by gaofeng @uel, 04/05/2016
-		//managedForm.getToolkit().createLabel(assessmentConfigurationComposite, "Protection Solution Selected:");
 
 		PatternFilter filter = new PatternFilter();
 		filter.setIncludeLeadingWildcard(true);
 		FilteredTree psFilteredTree = new FilteredTree(configurateGroup, SWT.BORDER | SWT.VIRTUAL, filter, true);
-		//TreeViewer 
+		
 		psTreeViewer = psFilteredTree.getViewer();
 		psTreeViewer.setAutoExpandLevel(3);
 		TreeColumnLayout pscolumnLayout = new TreeColumnLayout();
@@ -601,42 +608,82 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 		logFilePath.setEnabled(true);				
 		*/
 		
+		Label blanklabel9 = new Label(configurateGroup,  SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.CENTER |  SWT.FILL);
+		blanklabel9.setText("  ");
+		
 		final Button loadMetricFileButton = new Button(configurateGroup, SWT.CHECK );
-		loadMetricFileButton.setText(" Load from ACTC (Metrics Folder) ");	
+		loadMetricFileButton.setText(" Load Metrics from Folders ");	
 		loadMetricFileButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
 		loadMetricFileButton.setSelection(false);
 
 		Label label9 = new Label(configurateGroup,  SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.CENTER |  SWT.FILL);
-		label9.setText("Load from ACTC (Metrics Folder) : ");
+		label9.setText("Metrics Folder : ");
 		
 		metricsPathText = new Text(configurateGroup,SWT.BORDER | SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.LEFT |  SWT.FILL );
 		metricsPathText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
 		metricsPathText.setText("E:/eclipse mars for ADSS/workspace/Nagra Use Case/Metrics");
 		metricsPathText.setEnabled(false);
-		//filePathText.setEnabled(true);
+		
+		Label label10 = new Label(configurateGroup,  SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.CENTER |  SWT.FILL);
+		label10.setText("Vanilla Metrics Folder : ");		
+		vanillaMetricsPathText = new Text(configurateGroup,SWT.BORDER | SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.LEFT |  SWT.FILL );
+		vanillaMetricsPathText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
+		vanillaMetricsPathText.setText("E:/eclipse mars for ADSS/workspace/Nagra Use Case/Metrics");
+		vanillaMetricsPathText.setEnabled(false);
 
+		Button loadMetricsButton = new Button(configurateGroup, SWT.HORIZONTAL| SWT.CENTER );	
+		loadMetricsButton.setText("Load Metrics Files");
+		loadMetricsButton.setEnabled(false);
+		
 		loadMetricFileButton.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
 			public void widgetSelected(SelectionEvent e)
-			{				
+			{			
+				vanillaMetricsPathText.setEnabled(loadMetricFileButton.getSelection());
 				metricsPathText.setEnabled(loadMetricFileButton.getSelection());
+				loadMetricsButton.setEnabled(loadMetricFileButton.getSelection());
 			}
 		});
+		
+		loadMetricsButton.addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{			
+				try{			
+					//System.out.println("1**********");
+					LoadMetricsFiles lmf1= new LoadMetricsFiles(metricsPathText.getText());
+					//System.out.println("2**********");
+					metricsdatas = lmf1.getMetricsDatas();
+					//System.out.println("3**********");
+					LoadMetricsFiles lmf2= new LoadMetricsFiles(vanillaMetricsPathText.getText(),"vanilla");
+					//System.out.println("**********");
+					vanillametricsdata = lmf2.getMetricsData();
+					//System.out.println("4**********");
+				
+					loadMetricsButton.setText("Loading Sucessfully!");
+				}
+				catch(Exception ee)
+				{
+					loadMetricsButton.setText("Loading Failed!");
+				}
+				//System.out.println(metricsdatas.toArray());
+				//System.out.println(vanillametricsdata.getGMetrics());
+
+			}
+		});
+		
+		Label blanklabel10 = new Label(configurateGroup,  SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.CENTER |  SWT.FILL);
+		blanklabel10.setText("  ");
 		
 		final Button normalWeightButton = new Button(configurateGroup, SWT.CHECK );
 		normalWeightButton.setText(" Normalise the Weights of Transition Formulas ");	
 		normalWeightButton.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 2, 1));
-		normalWeightButton.setEnabled(false);
+		normalWeightButton.setEnabled(true);
 		
-		Label label10 = new Label(configurateGroup,  SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.CENTER |  SWT.FILL);
-		label10.setText("Load from ACTC (Vanilla Metrics Folder) : ");		
-		vanilaMetricsPathText = new Text(configurateGroup,SWT.BORDER | SWT.FULL_SELECTION |SWT.HORIZONTAL| SWT.LEFT |  SWT.FILL );
-		vanilaMetricsPathText.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false));
-		vanilaMetricsPathText.setText("E:/eclipse mars for ADSS/workspace/Nagra Use Case/Metrics");
-		vanilaMetricsPathText.setEnabled(false);
-		//filePathText.setEnabled(true);
 
+/*
 		loadMetricFileButton.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
@@ -644,7 +691,7 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 			{				
 				metricsPathText.setEnabled(normalWeightButton.getSelection());
 			}
-		});	
+		});	*/
 		
 		assessButton = new Button(configurateGroup, SWT.HORIZONTAL| SWT.CENTER );			
 		assessButton.setText(" Do Assessment! ");
@@ -675,16 +722,24 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 				{
 					assessment.setMetricFile(metricsPathText.getText());					
 					try{
-						ArrayList<Metric> metricsafter = new ArrayList<Metric>();
-						ArrayList<Metric> metricsbefore = new ArrayList<Metric>();
-						//TODO
-						//LoadMetricsFiles lmfs = new LoadMetricsFiles( adss.getModel().getSolutions().get(pcCombo.getSelectionIndex()).toString(), metricsPathText.getText());
-						//metricsafter = convertAfter(lmfs.getMetricsData());//
-						metricsafter =  parseMetrics(metricsPathText.getText());
-						//metricsbefore = convertBefore(lmfs.getMetricsData()); //
-						metricsbefore = parseMetricsBefore(vanilaMetricsPathText.getText());
+						MetricsData metricsafter = null;
+						MetricsData metricsbefore = null;
+						
+						for(int index =0; index <metricsdatas.size(); index++)
+						{
+							if(adss.getModel().getSolutions().get(pcCombo.getSelectionIndex()).toString() == metricsdatas.get(index).getPCName())
+							{
+								metricsafter = convertAfter(metricsdatas.get(index));
+								break;
+							}
+						}
+						//metricsafter =  parseMetrics(metricsPathText.getText());
+						metricsbefore = convertBefore(vanillametricsdata); //
+						if (metricsafter == null) metricsafter = metricsbefore;
+						//metricsbefore = parseMetricsBefore(vanilaMetricsPathText.getText());
+					
 						assessment.initMetrics( metricsafter, metricsbefore);//System.out.println(metrics);
-						assessment.loggingln("Now, the assessment session is in the local mode!");						
+						assessment.loggingln("Now, the assessment session is in the Metrics=files mode!");						
 					}
 					catch(Exception ei)
 					{
@@ -692,14 +747,13 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 						System.out.println(ei.fillInStackTrace());
 					}					
 				}
-				//to fetch the metrics data from VM
+				//to fetch the metrics data from AKB
 				else
 				{
 					ACTCConnector ac = new ACTCConnector(adss);
 					try{
-
 						assessment.initMetrics( metricsNameMap(adss.getModel().getSolutions().get(pcCombo.getSelectionIndex()).getApplicationMetrics()), metricsNameMap(adss.getModel().getVanillaSolution().getApplicationMetrics()));
-						assessment.loggingln("Now, the assessment session is in the remote mode!");
+						assessment.loggingln("Now, the assessment session is in the AKB remote mode!");
 						
 					}
 					catch(Exception ei)
@@ -708,6 +762,7 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 						System.out.println(ei);
 					}
 				}
+				assessment.initAnnotations(annotationtransitionmap);
 				double result;
 				if(normalWeightButton.getSelection() == false)
 				{
@@ -725,7 +780,7 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 				ad.setSolution(adss.getModel().getSolutions().get( pcCombo.getSelectionIndex() ) );
 				//ad.setKeyPath(assessment.getKeypath());
 				//ad.setKeyPath();
-				//TODO
+			
 				tableData.add(ad);
 				displayAssessmentTable(ad);
 				//psAssessed.add(curps, true);
@@ -827,7 +882,7 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 		  }); 
 		table.setRedraw(true);*/
 		
-		  
+		/*  
 		if(adss!=null)
 		{
 			for(int i=0;i<adss.getModel().getAttackPaths().size();i++)
@@ -847,7 +902,7 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 							{
 								if (transitions.get(k).getName().getText() == tran)
 								{
-								//TODO
+								
 								//transitions.get(k).setBackgroundColor();
 								//getSite().getPage().
 								break;
@@ -857,20 +912,20 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
 					}
 				}
 			}
-		}
+		}*/
 		getSite().getPage().addSelectionListener(this);
 		selectionChanged(null, getSite().getPage().getSelection());			
 			
 	}	
 
-	protected ArrayList<Metric> convertBefore(MetricsData metricsData) {
-		// TODO Auto-generated method stub
-		return null;
+	protected MetricsData convertBefore(MetricsData metricsData) {
+
+		return metricsData;
 	}
 	
-	private ArrayList<Metric> convertAfter(MetricsData metricsData) {
-		// TODO Auto-generated method stub
-		return null;
+	private MetricsData convertAfter(MetricsData metricsData) {
+		
+		return metricsData;
 	}
 
 	public void dispose()
@@ -1030,7 +1085,7 @@ public class ToolView extends ViewPart implements ISelectionListener, ISelection
         {
            adss = ((AKBEditor) partRef.getPart(true)).getADSS();
            System.out.println(adss);
-            //TODO
+           
             // Other stuff...
         }*/
 		

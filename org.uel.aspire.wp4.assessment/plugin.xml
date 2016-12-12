@@ -50,30 +50,6 @@
          point="org.eclipse.ui.menus">
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu?after=additions">
-         <menu
-               icon="icons/sample.gif"
-               id="org.uel.aspire.wp4.assessment.menus.UEL-ASPIREMenu"
-               label="UEL-ASPIRE"
-               mnemonic="U">
-            <command
-                  commandId="org.uel.aspire.wp4.assessment.commands.fitnessassessment"
-                  icon="icons/sample.gif"
-                  label="Fitness Function Assessment"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.uel.aspire.wp4.assessment.commands.RunSimulation"
-                  icon="icons/sample.gif"
-                  id="org.uel.aspire.wp4.assessment.RunSimulation"
-                  label="Atttack Simulation">
-            </command>
-            <command
-                  commandId="org.uel.aspire.wp4.assessment.light.command1"
-                  icon="icons/sample.gif"
-                  label="Fitness Function Simulation"
-                  style="push">
-            </command>
-         </menu>
          
          
       </menuContribution>
@@ -95,46 +71,6 @@
    </extension>
    <extension
          point="org.eclipse.ui.views">
-      <category
-            id="org.uel.aspire.wp4.assessment.UELView"
-            name="UELView">
-      </category>
-      <view
-            allowMultiple="false"
-            category="org.uel.aspire.wp4.assessment.UELView"
-            class="org.uel.aspire.wp4.assessment.views.UELView"
-            icon="icons/sample.gif"
-            id="org.uel.aspire.wp4.assessment.views.UELView"
-            name="ASPIRE Assessment "
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="false"
-            category="org.uel.aspire.wp4.assessment.UELView"
-            class="org.uel.aspire.wp4.assessment.views.UELPSView"
-            icon="icons/sample.gif"
-            id="org.uel.aspire.wp4.assessment.views.UELPSView"
-            name="UELPSView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="false"
-            category="org.uel.aspire.wp4.assessment.UELView"
-            class="org.uel.aspire.wp4.assessment.views.UELMetricView"
-            icon="icons/sample.gif"
-            id="org.uel.aspire.wp4.assessment.views.UELMetricView"
-            name="UELMetricView"
-            restorable="true">
-      </view>
-      <view
-            allowMultiple="false"
-            category="org.uel.aspire.wp4.assessment.UELView"
-            class="org.uel.aspire.wp4.assessment.views.UELEditView"
-            icon="icons/sample.gif"
-            id="org.uel.aspire.wp4.assessment.views.UELEditView"
-            name="UELEditView"
-            restorable="true">
-      </view>
    </extension>
 
 </plugin>
